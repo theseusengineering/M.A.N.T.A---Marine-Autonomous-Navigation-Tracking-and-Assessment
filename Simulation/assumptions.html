@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MANTA Simulation Model</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div><strong>MANTA</strong><span>Control Simulator</span></div>
+    <nav aria-label="Simulation pages">
+      <a href="index.html">Simulator</a>
+      <a class="active" href="assumptions.html">Model &amp; assumptions</a>
+    </nav>
+  </header>
+  <main class="document">
+    <p class="eyebrow">MODEL REFERENCE</p>
+    <h1>What this simulation represents</h1>
+    <p class="lede">This is a controller development model for the MANTA surface craft. It predicts planar movement well enough to compare steering logic and disturbance rejection. It is not a CFD result or a validated prediction of the final craft.</p>
+
+    <section>
+      <h2>Craft representation</h2>
+      <table>
+        <thead><tr><th>Parameter</th><th>Initial value</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td>Length</td><td>1.60 m</td><td>The POC OBJ is 400 mm long and documented as a 25% print.</td></tr>
+          <tr><td>Beam</td><td>1.48 m</td><td>The POC OBJ is 370 mm wide, scaled by four.</td></tr>
+          <tr><td>Mass</td><td>30 kg</td><td><strong>Unverified estimate.</strong> Adjustable in the simulator.</td></tr>
+          <tr><td>Yaw inertia</td><td>11.9 kg·m²</td><td>Estimated from mass and a rectangular footprint.</td></tr>
+          <tr><td>Maximum motor thrust</td><td>25 N each</td><td><strong>Unverified estimate.</strong> Fixed-direction port and starboard motors.</td></tr>
+          <tr><td>Motor lateral position</td><td>±0.55 m</td><td>Estimated from the hull centres in the model.</td></tr>
+          <tr><td>Keel position</td><td>0.88 m aft</td><td>Single centred steering fin behind the craft.</td></tr>
+          <tr><td>Keel range</td><td>±30°</td><td>Initial design assumption.</td></tr>
+          <tr><td>Cruise speed</td><td>1.1 m/s</td><td><strong>Unverified target.</strong></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Physics included</h2>
+      <ul>
+        <li>Surge, sway and yaw velocity with mass and yaw inertia.</li>
+        <li>Independent, fixed-direction port and starboard thrust, including reverse.</li>
+        <li>Differential-thrust yaw moment from the distance between the motors.</li>
+        <li>Speed-dependent lateral keel force and steering moment.</li>
+        <li>Linear and quadratic water-relative drag.</li>
+        <li>A steady current vector, periodic horizontal wave forcing, yaw disturbance and temporary gusts.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Controller included</h2>
+      <p>A line-of-sight waypoint follower selects a target ahead of the nearest point on the current route segment. A heading PID produces a signed steering demand. The keel-share setting allocates that demand between keel angle and differential motor thrust. A separate speed controller reduces thrust near a waypoint and stops at the final one.</p>
+    </section>
+
+    <section class="warning-block">
+      <h2>Current limits</h2>
+      <ul>
+        <li>No hull-water CFD, buoyancy, planing, roll, pitch, heave, propeller wash or wave elevation.</li>
+        <li>Drag, keel effectiveness, motor thrust and mass have not been measured.</li>
+        <li>Controller gains that work here must still be retuned during tank and open-water testing.</li>
+        <li>The visual model is a reduced browser mesh derived from <code>P.O.C. Quick Draft v1/v1.obj</code>. Its geometry does not drive hydrodynamic coefficients.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Recommended validation tests</h2>
+      <ol>
+        <li>Measure total craft mass and centre of mass.</li>
+        <li>Measure static thrust from each motor at several commands.</li>
+        <li>Run straight-line coast-down tests to estimate longitudinal drag.</li>
+        <li>Command constant motor differences and keel angles to measure turn rate.</li>
+        <li>Replace the estimated values, then tune the controller from low gains upward.</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>
