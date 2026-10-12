@@ -1,0 +1,8 @@
+{
+    "autodeskProduct": "Fusion360",
+    "type": "script",
+    "author": "Callum Flint",
+    "description": {
+        "": "Parametric herringbone rack generator driven by HB_* user parameters."
+    }
+}
